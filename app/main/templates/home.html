@@ -4,7 +4,7 @@
 <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
         {% for category in category %}
-            <a class="p-2 link-secondary" href="#">{{category.name}}</a>
+            <a class="p-2 link-secondary" href="{% url 'post_category' category.id %}">{{category.name}}</a>
         {% endfor %}
     </nav>
 </div>

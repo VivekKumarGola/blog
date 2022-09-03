@@ -187,7 +187,11 @@
                             <path d="M21 21l-5.2-5.2" />
                         </svg>
                     </a>
-                    <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
+                    {% if user.is_authenticated %}
+                    <a class="btn btn-sm btn-outline-success" href="{% url 'logout_user' %}">Logout</a>
+                    {% else %}
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'user_login' %}">Sign up</a>
+                    {% endif %}
                 </div>
             </div>
         </header>

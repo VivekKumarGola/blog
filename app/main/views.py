@@ -21,3 +21,17 @@ def post_details(request,id):
         "post":post
     }
     return render(request,'view-post.html',context)
+
+
+def get_post_by_category(request,id):
+    about = AboutU.objects.all().first()
+    category = Category.objects.all()
+    post = Rating.objects.all()
+    all_post = Post.objects.filter(category__id=id)
+    context = {
+        'about':about,
+        'category':category,
+        'post':post,
+        'all_post':all_post
+    }
+    return render(request,'home.html',context)
