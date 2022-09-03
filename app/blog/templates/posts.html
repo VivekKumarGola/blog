@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-10">
+            <h4>My Post</h4>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-sm  btn-primary" href="{% url 'add_post' %}">Add Post</a>
+        </div>
+    </div>
+</div>
+
+<table class="table " id="table">
+    <thead class="table-dark">
+        <tr>
+            <th>Sr No.</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in user.post.all %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.description | safe }}</td>
+            <td>{{ post.date | date}}</td>
+            <td>
+                <a  href="{% url 'update_post' post.id %}" class="btn btn-primary">Update</a>
+                <a  href="{% url 'del_post' post.id %}" class="btn btn-secondary">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready( function () {
+        $('#table').DataTable();
+    } );
+</script>
+{% endblock %}

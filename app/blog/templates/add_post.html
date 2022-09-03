@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>Success</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+
+
+
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-10">
+            <h4>Add Post</h4>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-sm  btn-primary" href="{% url 'post' %}">All Post</a>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <form action="{% url 'add_post' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row my-3" hidden>
+            <input type="text" value="{{ post.id }}" name="id" placeholder="Title" class="form-control" />
+        </div>
+        <div class="row my-3">
+            <input type="text" value="{{ post.title }}" name="title" placeholder="Title" class="form-control" />
+        </div>
+        <div class="row my-3">
+            <div class="col">
+                {% if post.thumbnail %}
+                    <img src="{{ post.thumbnail.url }}" id="thumbnail"  class="img-thumbnail my-5" onclick="uploadImage()" width="200px"/>
+                    <input hidden type="file" name="image" onchange="uploadI(this.value)" class="pic" />
+                {% else %}
+                        <img src="https://www.psdgraphics.com/file/user-icon.jpg" id="thumbnail" onclick="uploadImage()"  class="img-thumbnail my-5" width="200px"/>
+                        <input type="file" hidden name="image" onchange="uploadI(this.value)"  class="pic"/>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row my-3">
+            <select class="form-control cat"  name="category">
+                <option value="none" selected disabled hidden>Select an Option</option>
+                {% for cat in cat %}
+                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="row my-3">
+            <textarea id="editor" class="form-control" name="desc">
+                {{ post.description }}
+            </textarea>
+        </div>
+        <div class="row my-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+<script>
+    $(document).ready( function () {
+        $('#table').DataTable();
+    } );
+</script>
+<script>
+    ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .then( editor => {
+                    console.log( editor );
+            } )
+            .catch( error => {
+                    console.error( error );
+            } );
+    
+</script>
+<script>
+    function uploadImage(){
+        $('.pic').trigger('click')
+    }
+    function uploadI(val){
+        var file = document.querySelector("input[type=file]")['files'][0];
+  
+    var reader = new FileReader();
+    console.log("next");
+      
+    reader.onload = function () {
+        base64String = reader.result
+        $('#thumbnail').attr('src',base64String)
+        console.log(base64String);
+    }
+    reader.readAsDataURL(file);
+    }
+</script>
+{% endblock %}

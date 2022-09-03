@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1> Profile</h1>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <form method="POST" action="{% url 'dashboard' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if user.about.profile_pic %}
+                    <img src="{{ user.about.profile_pic.url }}" id="profile_pic"  class="img-thumbnail my-5" onclick="uploadImage()" width="300px"/>
+                    <input hidden type="file" name="profile" onchange="uploadI(this.value)" class="pic" />
+                {% else %}
+                    <img src="https://www.psdgraphics.com/file/user-icon.jpg" id="profile_pic" onclick="uploadImage()"  class="img-thumbnail my-5" width="300px"/>
+                    <input type="file" hidden name="profile" onchange="uploadI(this.value)"  class="pic"/>
+                {% endif %}
+                <br />
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Username"  id="" value="{{ user.username }}"  class="form-control mb-3">
+                <label>First Name</label>
+                <input type="text" name="first_name" placeholder="First Name"  id="" value="{{ user.first_name }}" class="form-control mb-3">
+                <label>Last Name</label>
+                <input type="text" name="last_name" placeholder="Last Name"  value="{{ user.last_name }}" class="form-control mb-3">
+                <label>Email</label>
+                <input type="text" name="email" placeholder="Email" value="{{ user.email }}"  id="" class="form-control mb-3">
+                <label>Address</label>
+                <input type="text" name="address" placeholder="Address" value="{{ user.about.address }}"  id="" class="form-control mb-3">
+                <label>Phone</label>
+                <input type="text" name="phone" placeholder="Phone" value="{{ user.about.phone }}"  id="" class="form-control mb-3">
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    function uploadImage(){
+        $('.pic').trigger('click')
+    }
+    function uploadI(val){
+        var file = document.querySelector("input[type=file]")['files'][0];
+  
+    var reader = new FileReader();
+    console.log("next");
+      
+    reader.onload = function () {
+        base64String = reader.result
+        $('#profile_pic').attr('src',base64String)
+        console.log(base64String);
+    }
+    reader.readAsDataURL(file);
+    }
+</script>
+
+{% endblock %}

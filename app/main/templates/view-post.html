@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+{% if post.thumbnail %}
+<img class="img-fluid" height="2px" src="{{ post.thumbnail.url }}" />
+{% endif %}
+
+    
+<div class="container">
+    <div class="row">
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h3>
+                {{ post.title }}
+            </h3>
+            <h6>
+                <div class="row">
+                    <div class="col">
+                        Created By : {{ post.user.first_name }} {{ post.user.last_name }}
+                    </div>
+                    <div class="col">
+                        Published on : {{ post.date }}
+                    </div>
+                </div>
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        {{ post.description | safe }}
+    </div>
+</div>
+
+
+
+{% endblock %}
